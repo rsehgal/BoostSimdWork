@@ -1,3 +1,9 @@
+#include <cassert>
+#include <cmath>
+#include <float.h>
+#include <limits>
+#include <stdio.h>
+
 #include <boost/simd/sdk/simd/pack.hpp>
 #include <boost/simd/include/functions/splat.hpp>
 #include <boost/simd/include/functions/plus.hpp>
@@ -42,17 +48,23 @@ typedef kBs::precision_v BsPrecision;
 typedef kBs::bool_v      BsBool;
 typedef kBs::inside_v    BsInside;
 
-template <typename Type>
+//template <typename Type>
 //VECGEOM_INLINE
-void CondAssign(boost::simd::pack<bool> const &cond,
-                boost::simd::pack<Type> const &thenval,
-                boost::simd::pack<Type> const &elseval,
-                boost::simd::pack<Type> *const output) {
+inline
+void CondAssign(//boost::simd::pack<bool> const &cond,
+				boost::simd::pack<Precision> const &cond,
+                boost::simd::pack<Precision> const &thenval,
+                boost::simd::pack<Precision> const &elseval,
+                boost::simd::pack<Precision> &output) {
   //(*output)(cond) = thenval;
   //(*output)(!cond) = elseval;
-  output = cond ? thenval : elseval;
+  //output = cond ? thenval : elseval;
+  std::cout<<"....This Guy is Called ...."<<std::endl;
+  //boost::simd::pack<Precision> mask = if_one_else_zero(cond);
+  output = if_else(cond,thenval,elseval);
+  //std::cout<<"Output : "<<output<<std::endl;
 }
-
+/*
 template <typename Type>
 //VECGEOM_INLINE
 void CondAssign(boost::simd::pack<bool> const &cond,
@@ -63,5 +75,5 @@ void CondAssign(boost::simd::pack<bool> const &cond,
   //(*output)(!cond) = elseval;
   output = cond ? thenval : elseval;
 }
-
+*/
 }// end of global namespace
